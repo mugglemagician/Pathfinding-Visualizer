@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { GridPropType, NodeType } from "../../types";
 import Node from "../Node/Node";
 import "./Grid.css";
-import { Dijkstra } from "../../PathFindingAlgorithms/Dijkstra";
-import { getShortestPath } from "../../PathFindingAlgorithms/Utils";
 
 const START_ROW = 5;
 const START_COL = 5;
@@ -45,14 +43,14 @@ const getNewGridWithWallToggled = (grid: NodeType[][], row: number, col: number)
 }
 
 
-export default function Grid({ rows, cols, isVisualizing }: GridPropType) {
+export default function Grid({ rows, cols, isVisualizing, algorithm }: GridPropType) {
 
     const [grid, setGrid] = useState<NodeType[][]>(() => GenerateGrid(rows, cols));
     const [isMousePressed, setIsMousePressed] = useState<boolean>(false);
 
     useEffect(() => {
-        if (isVisualizing)
-            visualizeDijkstra();
+        if (isVisualizing && algorithm)
+            visualizePathFindingAlgorithm();
     }, [isVisualizing]);
 
     const handleMouseDown = (row: number, col: number, e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
@@ -98,13 +96,13 @@ export default function Grid({ rows, cols, isVisualizing }: GridPropType) {
 
     }
 
-    const visualizeDijkstra = (): void => {
-        const startNode = grid[START_ROW][START_COL];
-        const endNode = grid[END_ROW][END_COL];
-        const visitedNodeInOrder = Dijkstra(grid, startNode, endNode);
-        const shortestPath = getShortestPath(endNode);
-        animatePath(visitedNodeInOrder, shortestPath);
-
+    const visualizePathFindingAlgorithm = (): void => {
+        if (algorithm) {
+            const startNode = grid[START_ROW][START_COL];
+            const endNode = grid[END_ROW][END_COL];
+            const { visitedNodesInOrder, finalPath } = algorithm.fn(grid, startNode, endNode);
+            animatePath(visitedNodesInOrder, finalPath);
+        }
     }
 
     return (

@@ -2,7 +2,7 @@ import { NavbarPropType } from "../../types";
 import "./Navbar.css";
 import DropDown from "../DropDown/DropDown";
 
-export default function Navbar({ isVisualizing, startPathFinding, isViewingAlgorithms, toggleViewAlgorithms, isViewingSpeed, toggleViewSpeed }: NavbarPropType) {
+export default function Navbar({ isVisualizing, startPathFinding, isViewingAlgorithms, toggleViewAlgorithms, isViewingSpeed, toggleViewSpeed, selectAlgorithm }: NavbarPropType) {
 
     return (
         <nav>
@@ -14,14 +14,16 @@ export default function Navbar({ isVisualizing, startPathFinding, isViewingAlgor
                 <DropDown dropDownLabel="Algorithms"
                     toggleDropDownList={toggleViewAlgorithms}
                     isShowing={isViewingAlgorithms}
-                    elements={["Dijkstra", "Breadth First Search", "Depth First Search"]}
-                    dropDownWidth="250px" />
+                    elements={["Dijkstra", "Depth First Search", "Breadth First Search", "A* Search"]}
+                    dropDownWidth="250px"
+                    selectItem={selectAlgorithm} />
 
                 <DropDown dropDownLabel="Speed"
                     toggleDropDownList={toggleViewSpeed}
                     isShowing={isViewingSpeed}
                     elements={["Slow", "Medium", "Fast"]}
-                    dropDownWidth="100px" />
+                    dropDownWidth="100px"
+                    selectItem={undefined} />
 
                 <li className="visualize navbar-item">
                     <button onClick={startPathFinding} className="button">

@@ -1,7 +1,8 @@
 export type GridPropType = {
     rows: number,
     cols: number,
-    isVisualizing: boolean
+    isVisualizing: boolean,
+    algorithm: AlgorithmInputType | null
 };
 
 export type NodeType = {
@@ -34,7 +35,8 @@ export type NavbarPropType = {
     isViewingAlgorithms: boolean,
     toggleViewAlgorithms: () => void,
     isViewingSpeed: boolean,
-    toggleViewSpeed: () => void
+    toggleViewSpeed: () => void,
+    selectAlgorithm: (id: number) => void
 }
 
 export type DropDownPropType = {
@@ -42,5 +44,21 @@ export type DropDownPropType = {
     dropDownWidth: string,
     elements: string[],
     isShowing: boolean,
-    toggleDropDownList: () => void
+    toggleDropDownList: () => void,
+    selectItem: ((id: number) => void) | undefined
+}
+
+export type DropDownElementPropType = {
+    element: string
+}
+
+export type AlgorithmReturnType = {
+    visitedNodesInOrder: NodeType[],
+    finalPath: NodeType[]
+}
+
+export type AlgorithmInputType = {
+    id: number,
+    name: string,
+    fn: (grid: NodeType[][], startNode: NodeType, endNode: NodeType) => AlgorithmReturnType
 }
