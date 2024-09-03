@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { GridPropType, NodeType } from "../../types";
 import Node from "../Node/Node";
 import "./Grid.css";
+import React from "react";
 
 const START_ROW = 5;
 const START_COL = 5;
-const END_ROW = 20;
-const END_COL = 10;
+const END_ROW = 5;
+const END_COL = 40;
 
 const GenerateGrid = (rows: number, cols: number): NodeType[][] => {
     const grid: NodeType[][] = [];
@@ -49,15 +50,29 @@ const getNewGridWithWallToggled = (grid: NodeType[][], row: number, col: number)
 }
 
 
-export default function Grid({ rows, cols, isVisualizing, algorithm }: GridPropType) {
+export default React.memo(function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing }: GridPropType) {
 
     const [grid, setGrid] = useState<NodeType[][]>(() => GenerateGrid(rows, cols));
     const [isMousePressed, setIsMousePressed] = useState<boolean>(false);
+    const [startPathFinding, setStartPathFinding] = useState<boolean>(false);
 
     useEffect(() => {
-        if (isVisualizing && algorithm)
+        if (isVisualizing && algorithm && !startPathFinding) {
+            setStartPathFinding(true);
+            setGrid(prevGrid => {
+                return prevGrid.map(row => row.map(node => {
+                    const newNode = CreateNode(node.row, node.col);
+                    newNode.isWall = node.isWall;
+                    return newNode;
+                }));
+            })
+        }
+
+        if (startPathFinding) {
             visualizePathFindingAlgorithm();
-    }, [isVisualizing]);
+        }
+
+    }, [isVisualizing, startPathFinding]);
 
     const handleMouseDown = (row: number, col: number, e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
         setGrid(prevGrid => getNewGridWithWallToggled(prevGrid, row, col));
@@ -100,6 +115,11 @@ export default function Grid({ rows, cols, isVisualizing, algorithm }: GridPropT
             })
         }, 30 * visitedInOrder.length);
 
+        setTimeout(() => {
+            setStartPathFinding(false);
+            resetVisualizing();
+        }, visitedInOrder.length * 30 + finalPath.length * 40 + 50);
+
     }
 
     const visualizePathFindingAlgorithm = (): void => {
@@ -107,13 +127,15 @@ export default function Grid({ rows, cols, isVisualizing, algorithm }: GridPropT
             const startNode = grid[START_ROW][START_COL];
             const endNode = grid[END_ROW][END_COL];
             const { visitedNodesInOrder, finalPath } = algorithm.fn(grid, startNode, endNode);
+            console.log(visitedNodesInOrder);
+            console.log(finalPath);
             animatePath(visitedNodesInOrder, finalPath);
         }
     }
 
     return (
 
-        <div className="Grid" onMouseUp={handleMouseUp}>
+        <div className="grid" onMouseUp={handleMouseUp}>
 
             {
                 grid.map((row, rowIdx) => {
@@ -145,4 +167,4 @@ export default function Grid({ rows, cols, isVisualizing, algorithm }: GridPropT
 
 
     );
-}
+});

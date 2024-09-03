@@ -1,9 +1,19 @@
 import { NavbarPropType } from "../../types";
 import "./Navbar.css";
 import DropDown from "../DropDown/DropDown";
+import { useState } from "react";
 
-export default function Navbar({ isVisualizing, startPathFinding, isViewingAlgorithms, toggleViewAlgorithms, isViewingSpeed, toggleViewSpeed, selectAlgorithm }: NavbarPropType) {
+export default function Navbar({ isVisualizing, startPathFinding, selectAlgorithm }: NavbarPropType) {
+    const [isViewingAlgorithms, setIsViewingAlgorithms] = useState<boolean>(false);
+    const [isViewingSpeed, setIsViewingSpeed] = useState<boolean>(false);
 
+    const toggleViewAlgorithms = (): void => {
+        setIsViewingAlgorithms(prev => !prev);
+    }
+
+    const toggleViewSpeed = (): void => {
+        setIsViewingSpeed(prev => !prev);
+    }
     return (
         <nav>
             <ul className="navbar">
@@ -18,6 +28,12 @@ export default function Navbar({ isVisualizing, startPathFinding, isViewingAlgor
                     dropDownWidth="250px"
                     selectItem={selectAlgorithm} />
 
+                <li className="visualize navbar-item">
+                    <button onClick={startPathFinding} className="button">
+                        {isVisualizing.innerText}
+                    </button>
+                </li>
+
                 <DropDown dropDownLabel="Speed"
                     toggleDropDownList={toggleViewSpeed}
                     isShowing={isViewingSpeed}
@@ -25,11 +41,6 @@ export default function Navbar({ isVisualizing, startPathFinding, isViewingAlgor
                     dropDownWidth="100px"
                     selectItem={undefined} />
 
-                <li className="visualize navbar-item">
-                    <button onClick={startPathFinding} className="button">
-                        {isVisualizing ? "Stop!" : "Visualize!"}
-                    </button>
-                </li>
             </ul >
         </nav >
     );

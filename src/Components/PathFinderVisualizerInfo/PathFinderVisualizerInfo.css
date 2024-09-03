@@ -1,0 +1,59 @@
+.pathFinderVisualizerInfo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.pathFinderInfo {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.pathFinderInfo li {
+    font-size: x-large;
+    color: #021526;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.nodeShowCase {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+
+.unvisitedShowCase {
+    background-color: white;
+    border: 2px solid rgb(175, 216, 248);
+}
+
+.finalShowCase {
+    background-color: rgb(255, 254, 106);
+}
+
+.wallShowCase {
+    background-color: rgb(12, 53, 71);
+}
+
+.visited-one {
+    background-color: rgba(0, 190, 218, 0.75);
+}
+
+.visited-two {
+    background-color: rgba(0, 217, 159, 0.75);
+}
+
+.startShowCase {
+    background-color: green;
+}
+
+.targetShowCase {
+    background-color: brown;
+}

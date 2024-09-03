@@ -2,8 +2,14 @@ export type GridPropType = {
     rows: number,
     cols: number,
     isVisualizing: boolean,
-    algorithm: AlgorithmInputType | null
+    algorithm: AlgorithmInputType | null,
+    resetVisualizing: () => void;
 };
+
+export type isVisualizingType = {
+    innerText: string,
+    state: boolean
+}
 
 export type NodeType = {
     row: number,
@@ -34,12 +40,8 @@ export type NodePropType = {
 }
 
 export type NavbarPropType = {
-    isVisualizing: boolean,
+    isVisualizing: isVisualizingType,
     startPathFinding: () => void,
-    isViewingAlgorithms: boolean,
-    toggleViewAlgorithms: () => void,
-    isViewingSpeed: boolean,
-    toggleViewSpeed: () => void,
     selectAlgorithm: (id: number) => void
 }
 
@@ -64,5 +66,6 @@ export type AlgorithmReturnType = {
 export type AlgorithmInputType = {
     id: number,
     name: string,
+    info: string,
     fn: (grid: NodeType[][], startNode: NodeType, endNode: NodeType) => AlgorithmReturnType
 }

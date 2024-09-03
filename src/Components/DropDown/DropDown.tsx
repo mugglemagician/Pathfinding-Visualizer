@@ -12,6 +12,7 @@ export default function DropDown({ dropDownLabel, elements, isShowing, toggleDro
     const style = { width: dropDownWidth, display: isShowing ? "inline-block" : "none" };
 
     const handleSelect = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
+        console.log(isShowing);
         if (dropDownRef.current) {
             dropDownRef.current.lastChild?.childNodes.forEach((child: ChildNode, id: number) => {
                 if ((child as Node) === (e.target as Node)) {

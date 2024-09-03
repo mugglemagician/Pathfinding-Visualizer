@@ -11,6 +11,7 @@
     align-items: start;
     background-color: #405D72;
     padding: 5px 10px;
+    z-index: 10;
 }
 
 .dropDown {

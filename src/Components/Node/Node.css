@@ -1,8 +1,13 @@
 .Node {
     width: 25px;
     height: 25px;
-    outline: 1px solid rgb(175, 216, 248);
+    border-right: 1px solid rgb(175, 216, 248);
+    border-top: 1px solid rgb(175, 216, 248);
     display: inline-block;
+}
+
+.Node:first-child {
+    border-left: 1px solid rgb(175, 216, 248);
 }
 
 
