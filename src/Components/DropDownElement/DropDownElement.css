@@ -1,0 +1,12 @@
+.dropDownElement {
+    color: #FFF8F3;
+    padding: 5px 10px;
+    margin: 2px 0;
+    font-size: x-large;
+    display: inline-block;
+}
+
+.dropDownElement:hover {
+    background-color: #D7A165;
+    border-radius: 8px;
+}

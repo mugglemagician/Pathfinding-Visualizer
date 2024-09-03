@@ -1,0 +1,31 @@
+.dropDownList {
+    width: 250px;
+    border-radius: 8px;
+    margin-top: 5px;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    background-color: #405D72;
+    padding: 5px 10px;
+}
+
+.dropDown {
+    position: relative;
+    color: #FFF8F3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropDown h2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

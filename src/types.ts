@@ -27,3 +27,20 @@ export type NodePropType = {
     handleMouseDown: (row: number, col: number, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
     handleMouseOver: (row: number, col: number) => void
 }
+
+export type NavbarPropType = {
+    isVisualizing: boolean,
+    startPathFinding: () => void,
+    isViewingAlgorithms: boolean,
+    toggleViewAlgorithms: () => void,
+    isViewingSpeed: boolean,
+    toggleViewSpeed: () => void
+}
+
+export type DropDownPropType = {
+    dropDownLabel: string,
+    dropDownWidth: string,
+    elements: string[],
+    isShowing: boolean,
+    toggleDropDownList: () => void
+}
