@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Grid from "../Grid/Grid";
 import Navbar from "../Navbar/Navbar";
-import { visualizeBfs, visualizeDfs, visualizeDijkstra } from "../../PathFindingAlgorithms/visualizeAlgorithms";
+import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs } from "../../PathFindingAlgorithms/visualizeAlgorithms";
 import { AlgorithmInputType } from "../../types";
 
 const algorithms = [
     { id: 0, name: "dijkstra", fn: visualizeDijkstra },
     { id: 1, name: "dfs", fn: visualizeDfs },
-    { id: 2, name: "bfs", fn: visualizeBfs }
-]
+    { id: 2, name: "bfs", fn: visualizeBfs },
+    { id: 3, name: "A*", fn: visualizeAStar },
+    { id: 4, name: "Gbfs", fn: visualizeGbfs }
+];
 
 let algorithm: AlgorithmInputType | null = null;
 

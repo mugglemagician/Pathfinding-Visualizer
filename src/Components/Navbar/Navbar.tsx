@@ -14,7 +14,7 @@ export default function Navbar({ isVisualizing, startPathFinding, isViewingAlgor
                 <DropDown dropDownLabel="Algorithms"
                     toggleDropDownList={toggleViewAlgorithms}
                     isShowing={isViewingAlgorithms}
-                    elements={["Dijkstra", "Depth First Search", "Breadth First Search", "A* Search"]}
+                    elements={["Dijkstra", "Depth First Search", "Breadth First Search", "A* Search", "Greedy Best First Search"]}
                     dropDownWidth="250px"
                     selectItem={selectAlgorithm} />
 

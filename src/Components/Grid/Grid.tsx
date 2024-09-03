@@ -5,7 +5,7 @@ import "./Grid.css";
 
 const START_ROW = 5;
 const START_COL = 5;
-const END_ROW = 10;
+const END_ROW = 20;
 const END_COL = 10;
 
 const GenerateGrid = (rows: number, cols: number): NodeType[][] => {
@@ -32,7 +32,13 @@ const CreateNode = (row: number, col: number): NodeType => {
         isVisited: false,
         isWall: false,
         isInFinalPath: false,
-        previousNode: null
+        previousNode: null,
+        gCost: Infinity,
+        hCost: Infinity,
+        heapIdx: -1,
+        getFCost() {
+            return this.gCost + this.hCost;
+        }
     };
 }
 
