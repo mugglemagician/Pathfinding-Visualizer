@@ -5,6 +5,7 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #FFF8F3;
 }
 
 .navbar {
@@ -16,8 +17,7 @@ nav {
 }
 
 .branding {
-    color: #FFF8F3;
-    font-size: xx-large;
+    font-size: x-large;
 }
 
 .navbar-item {
@@ -25,4 +25,8 @@ nav {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.clear-option {
+    font-size: small;
 }

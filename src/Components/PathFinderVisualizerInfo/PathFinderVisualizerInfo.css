@@ -50,10 +50,9 @@
     background-color: rgba(0, 217, 159, 0.75);
 }
 
-.startShowCase {
-    background-color: green;
-}
-
+.startShowCase,
 .targetShowCase {
-    background-color: brown;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

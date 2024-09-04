@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import Grid from "../Grid/Grid";
 import Navbar from "../Navbar/Navbar";
-import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs } from "../../PathFindingAlgorithms/visualizeAlgorithms";
 import { AlgorithmInputType, isVisualizingType } from "../../types";
 import "./PathFinderVisualizer.css";
 import PathFinderVisualizerInfo from "../PathFinderVisualizerInfo/PathFinderVisualizerInfo";
+import { algorithms } from "../Utilities/Utils";
 
-const algorithms = [
-    { id: 0, name: "dijkstra", fn: visualizeDijkstra, info: "Dijkstra's algorithm is weighted and guarantees the shortest path!" },
-    { id: 1, name: "dfs", fn: visualizeDfs, info: "Depth-first Search is unweighted and does not guarantees the shortest path" },
-    { id: 2, name: "bfs", fn: visualizeBfs, info: "Breadth-first Search is weighted and guarantees the shortest path" },
-    { id: 3, name: "A*", fn: visualizeAStar, info: "A* Search is weighted and guarantees the shortest path!" },
-    { id: 4, name: "Gbfs", fn: visualizeGbfs, info: "Greedy Best-first Search is weighted and does not guarantees the shortest path!" }
-];
+const speeds = [60, 40, 25];
 
 let algorithm: AlgorithmInputType | null = null;
 
@@ -22,6 +16,10 @@ const cols = (window.innerWidth - 100) / 25;
 export default React.memo(function PathFinderVisualizer() {
 
     const [isVisualizing, setIsVisualizing] = useState<isVisualizingType>({ innerText: "Visualize", state: false });
+    const [speed, setSpeed] = useState<number>(40);
+    const [clearBoard, setClearBoard] = useState<boolean>(false);
+    const [clearPath, setClearPath] = useState<boolean>(false);
+    const [clearWalls, setClearWalls] = useState<boolean>(false);
 
     const startPathFinding = (): void => {
         if (!algorithm) return;
@@ -38,16 +36,50 @@ export default React.memo(function PathFinderVisualizer() {
         setIsVisualizing({ innerText: "Visualize " + algorithm.name, state: false });
     }
 
+    const selectSpeed = (id: number) => {
+        setSpeed(speeds[id]);
+    }
+
+    const toggleClearBoard = () => {
+        if (isVisualizing.state) return;
+        setClearBoard(prev => !prev);
+    }
+
+    const toggleClearPath = () => {
+        if (isVisualizing.state) return;
+        setClearPath(prev => !prev);
+    }
+
+    const toggleClearWalls = () => {
+        if (isVisualizing.state) return;
+        setClearWalls(prev => !prev);
+    }
+
     return (
         <div className="pathFinder">
             <Navbar isVisualizing={isVisualizing}
                 startPathFinding={startPathFinding}
                 selectAlgorithm={selectAlgorithm}
+                selectSpeed={selectSpeed}
+                toggleClearBoard={toggleClearBoard}
+                toggleClearPath={toggleClearPath}
+                toggleClearWalls={toggleClearWalls}
             />
 
             <PathFinderVisualizerInfo algoInfo={algorithm ? algorithm.info : "Pick an algorithm to visualize!"} />
 
-            <Grid rows={rows} cols={cols} isVisualizing={isVisualizing.state} algorithm={algorithm} resetVisualizing={resetVisualizing} />
+            <Grid rows={rows}
+                cols={cols}
+                isVisualizing={isVisualizing.state}
+                algorithm={algorithm}
+                resetVisualizing={resetVisualizing}
+                speed={speed}
+                clearBoard={clearBoard}
+                clearPath={clearPath}
+                clearWalls={clearWalls}
+                toggleClearBoard={toggleClearBoard}
+                toggleClearPath={toggleClearPath}
+                toggleClearWalls={toggleClearWalls} />
         </div>
 
     );

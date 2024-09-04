@@ -5,6 +5,7 @@
 .gridRow {
     margin: 0;
     height: 25px;
+    display: flex;
 }
 
 .gridRow:last-child {

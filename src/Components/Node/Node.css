@@ -1,9 +1,12 @@
 .Node {
     width: 25px;
-    height: 25px;
+    height: 100%;
     border-right: 1px solid rgb(175, 216, 248);
     border-top: 1px solid rgb(175, 216, 248);
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .Node:first-child {
@@ -12,12 +15,30 @@
 
 
 .Node-Start {
-    background-color: green;
+    position: relative;
+    animation-name: startAndTargetAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
 }
 
+
 .Node-End {
-    background-color: brown;
+    position: relative;
+    animation-name: startAndTargetAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
 }
+
 
 .Node-Visited {
     animation-name: visitedAnimation;
@@ -105,5 +126,19 @@
     100% {
         transform: scale(1);
         background-color: rgb(255, 254, 106);
+    }
+}
+
+@keyframes startAndTargetAnimation {
+    0% {
+        transform: scale(0.3);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }

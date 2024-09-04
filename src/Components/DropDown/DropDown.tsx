@@ -1,18 +1,24 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useOutsideClick from "../../Hooks/useOutsideClick";
 import { DropDownPropType } from "../../types";
 import DropDownElement from "../DropDownElement/DropDownElement";
 import "./DropDown.css";
+import React from "react";
 
-export default function DropDown({ dropDownLabel, elements, isShowing, toggleDropDownList, dropDownWidth, selectItem }: DropDownPropType) {
+export default function DropDown({ dropDownLabel, elements, dropDownWidth, selectItem }: DropDownPropType) {
 
     const dropDownRef = useRef<HTMLLIElement | null>(null);
-    useOutsideClick(dropDownRef, isShowing, toggleDropDownList);
+    const [isShowing, setIsShowing] = useState<boolean>(false);
+
+    const toggleDropDownList = () => {
+        setIsShowing(prev => !prev);
+    }
+
+    useOutsideClick<HTMLLIElement>(dropDownRef, isShowing, toggleDropDownList);
 
     const style = { width: dropDownWidth, display: isShowing ? "inline-block" : "none" };
 
     const handleSelect = (e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
-        console.log(isShowing);
         if (dropDownRef.current) {
             dropDownRef.current.lastChild?.childNodes.forEach((child: ChildNode, id: number) => {
                 if ((child as Node) === (e.target as Node)) {

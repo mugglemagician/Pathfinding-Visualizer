@@ -3,7 +3,14 @@ export type GridPropType = {
     cols: number,
     isVisualizing: boolean,
     algorithm: AlgorithmInputType | null,
-    resetVisualizing: () => void;
+    resetVisualizing: () => void,
+    speed: number,
+    clearBoard: boolean,
+    clearPath: boolean,
+    clearWalls: boolean,
+    toggleClearBoard: () => void,
+    toggleClearPath: () => void,
+    toggleClearWalls: () => void
 };
 
 export type isVisualizingType = {
@@ -42,15 +49,17 @@ export type NodePropType = {
 export type NavbarPropType = {
     isVisualizing: isVisualizingType,
     startPathFinding: () => void,
-    selectAlgorithm: (id: number) => void
+    selectAlgorithm: (id: number) => void,
+    selectSpeed: (id: number) => void,
+    toggleClearBoard: () => void,
+    toggleClearPath: () => void,
+    toggleClearWalls: () => void
 }
 
 export type DropDownPropType = {
     dropDownLabel: string,
     dropDownWidth: string,
     elements: string[],
-    isShowing: boolean,
-    toggleDropDownList: () => void,
     selectItem: ((id: number) => void) | undefined
 }
 

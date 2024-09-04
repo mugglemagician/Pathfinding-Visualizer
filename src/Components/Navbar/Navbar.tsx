@@ -1,19 +1,9 @@
 import { NavbarPropType } from "../../types";
 import "./Navbar.css";
 import DropDown from "../DropDown/DropDown";
-import { useState } from "react";
 
-export default function Navbar({ isVisualizing, startPathFinding, selectAlgorithm }: NavbarPropType) {
-    const [isViewingAlgorithms, setIsViewingAlgorithms] = useState<boolean>(false);
-    const [isViewingSpeed, setIsViewingSpeed] = useState<boolean>(false);
+export default function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectSpeed, toggleClearBoard, toggleClearPath, toggleClearWalls }: NavbarPropType) {
 
-    const toggleViewAlgorithms = (): void => {
-        setIsViewingAlgorithms(prev => !prev);
-    }
-
-    const toggleViewSpeed = (): void => {
-        setIsViewingSpeed(prev => !prev);
-    }
     return (
         <nav>
             <ul className="navbar">
@@ -22,8 +12,6 @@ export default function Navbar({ isVisualizing, startPathFinding, selectAlgorith
                 </li>
 
                 <DropDown dropDownLabel="Algorithms"
-                    toggleDropDownList={toggleViewAlgorithms}
-                    isShowing={isViewingAlgorithms}
                     elements={["Dijkstra", "Depth First Search", "Breadth First Search", "A* Search", "Greedy Best First Search"]}
                     dropDownWidth="250px"
                     selectItem={selectAlgorithm} />
@@ -34,12 +22,22 @@ export default function Navbar({ isVisualizing, startPathFinding, selectAlgorith
                     </button>
                 </li>
 
+                <li className="navbar-item clear-option" onClick={toggleClearBoard}>
+                    <h2>Clear Board</h2>
+                </li>
+
+                <li className="navbar-item clear-option" onClick={toggleClearWalls}>
+                    <h2>Clear Walls</h2>
+                </li>
+
+                <li className="navbar-item clear-option" onClick={toggleClearPath}>
+                    <h2>Clear Path</h2>
+                </li>
+
                 <DropDown dropDownLabel="Speed"
-                    toggleDropDownList={toggleViewSpeed}
-                    isShowing={isViewingSpeed}
                     elements={["Slow", "Medium", "Fast"]}
                     dropDownWidth="100px"
-                    selectItem={undefined} />
+                    selectItem={selectSpeed} />
 
             </ul >
         </nav >

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-function useOutsideClick(ref: React.RefObject<HTMLLIElement | null>, isShowing: boolean, callback: () => void) {
+function useOutsideClick<T extends HTMLElement>(ref: React.RefObject<T | null>, isShowing: boolean, callback: () => void) {
     useEffect(() => {
 
         function handleClickOutside(event: globalThis.MouseEvent) {

@@ -3,65 +3,26 @@ import { GridPropType, NodeType } from "../../types";
 import Node from "../Node/Node";
 import "./Grid.css";
 import React from "react";
-
-const START_ROW = 5;
-const START_COL = 5;
-const END_ROW = 5;
-const END_COL = 40;
-
-const GenerateGrid = (rows: number, cols: number): NodeType[][] => {
-    const grid: NodeType[][] = [];
-
-    for (let row = 0; row < rows; row++) {
-        const currentRow: NodeType[] = [];
-        for (let col = 0; col < cols; col++) {
-            currentRow.push(CreateNode(row, col));
-        }
-        grid.push(currentRow);
-    }
-
-    return grid;
-}
-
-const CreateNode = (row: number, col: number): NodeType => {
-    return {
-        row,
-        col,
-        isStart: START_ROW === row && START_COL === col,
-        isEnd: END_ROW === row && END_COL === col,
-        distance: Infinity,
-        isVisited: false,
-        isWall: false,
-        isInFinalPath: false,
-        previousNode: null,
-        gCost: Infinity,
-        hCost: Infinity,
-        heapIdx: -1,
-        getFCost() {
-            return this.gCost + this.hCost;
-        }
-    };
-}
-
-const getNewGridWithWallToggled = (grid: NodeType[][], row: number, col: number): NodeType[][] => {
-    const newGrid = grid.map(row => row.map(node => { return { ...node } }));
-    newGrid[row][col].isWall = !newGrid[row][col].isWall;
-    return newGrid;
-}
+import { CreateNode, GenerateGrid, getNewGridWithWallToggled, ClearBoard, ClearPath, ClearWalls } from "../Utilities/Utils";
 
 
-export default React.memo(function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing }: GridPropType) {
+export default React.memo(function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, clearBoard, clearPath, clearWalls, toggleClearBoard, toggleClearPath, toggleClearWalls }: GridPropType) {
 
     const [grid, setGrid] = useState<NodeType[][]>(() => GenerateGrid(rows, cols));
     const [isMousePressed, setIsMousePressed] = useState<boolean>(false);
+    const [isChangingStartNode, setIsChangingStartNode] = useState<boolean>(false);
+    const [isChangingEndNode, setIsChangingEndNode] = useState<boolean>(false);
     const [startPathFinding, setStartPathFinding] = useState<boolean>(false);
+    const [startNodePosition, setStartNodePosition] = useState<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) - 10 });
+    const [endNodePosition, setEndNodePosition] = useState<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) + 10 });
+
 
     useEffect(() => {
         if (isVisualizing && algorithm && !startPathFinding) {
             setStartPathFinding(true);
             setGrid(prevGrid => {
                 return prevGrid.map(row => row.map(node => {
-                    const newNode = CreateNode(node.row, node.col);
+                    const newNode = CreateNode(node.row, node.col, startNodePosition.row, startNodePosition.col, endNodePosition.row, endNodePosition.col);
                     newNode.isWall = node.isWall;
                     return newNode;
                 }));
@@ -72,20 +33,65 @@ export default React.memo(function Grid({ rows, cols, isVisualizing, algorithm, 
             visualizePathFindingAlgorithm();
         }
 
-    }, [isVisualizing, startPathFinding]);
+        if (clearBoard) {
+            setGrid(prevGrid => ClearBoard(prevGrid, startNodePosition.row, startNodePosition.col, endNodePosition.row, endNodePosition.col));
+            toggleClearBoard();
+        }
+        else if (clearPath) {
+            setGrid(prevGrid => ClearPath(prevGrid, startNodePosition.row, startNodePosition.col, endNodePosition.row, endNodePosition.col));
+            toggleClearPath();
+        }
+        else if (clearWalls) {
+            setGrid(prevGrid => ClearWalls(prevGrid));
+            toggleClearWalls();
+        }
 
-    const handleMouseDown = (row: number, col: number, e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+    }, [isVisualizing, startPathFinding, clearBoard, clearPath, clearWalls]);
+
+    const handleMouseDown = (row: number, col: number): void => {
+        if (row === startNodePosition.row && col === startNodePosition.col) {
+            setIsChangingStartNode(true);
+            setIsMousePressed(true);
+            return;
+        } else if (row === endNodePosition.row && col === endNodePosition.col) {
+            setIsChangingEndNode(true);
+            setIsMousePressed(true);
+            return;
+        }
+
+        // Toggle wall state if not on start or end node
         setGrid(prevGrid => getNewGridWithWallToggled(prevGrid, row, col));
         setIsMousePressed(true);
     }
 
+
     const handleMouseOver = (row: number, col: number): void => {
         if (!isMousePressed) return;
-        setGrid(prevGrid => getNewGridWithWallToggled(prevGrid, row, col));
+        if (!isChangingStartNode && !isChangingEndNode) setGrid(prevGrid => getNewGridWithWallToggled(prevGrid, row, col));
+        else if (isChangingStartNode) {
+            setGrid(prevGrid => {
+                const newGrid = prevGrid.map(row => row.map(node => { return { ...node, isStart: false } }));
+                newGrid[row][col].isStart = true;
+                newGrid[row][col].isWall = false;
+                return newGrid;
+            });
+            setStartNodePosition({ row, col });
+        }
+        else {
+            setGrid(prevGrid => {
+                const newGrid = prevGrid.map(row => row.map(node => { return { ...node, isEnd: false } }));
+                newGrid[row][col].isEnd = true;
+                newGrid[row][col].isWall = false;
+                return newGrid;
+            });
+            setEndNodePosition({ row, col });
+        }
     }
 
     const handleMouseUp = (): void => {
         setIsMousePressed(false);
+        setIsChangingStartNode(false);
+        setIsChangingEndNode(false);
     }
 
 
@@ -99,7 +105,7 @@ export default React.memo(function Grid({ rows, cols, isVisualizing, algorithm, 
                     return newGrid;
                 })
 
-            }, 30 * i);
+            }, speed * i);
         });
 
         setTimeout(() => {
@@ -111,24 +117,22 @@ export default React.memo(function Grid({ rows, cols, isVisualizing, algorithm, 
                         newGrid[newNode.row][newNode.col] = newNode;
                         return newGrid;
                     })
-                }, 40 * i);
+                }, speed * i);
             })
-        }, 30 * visitedInOrder.length);
+        }, (speed + 1) * visitedInOrder.length);
 
         setTimeout(() => {
             setStartPathFinding(false);
             resetVisualizing();
-        }, visitedInOrder.length * 30 + finalPath.length * 40 + 50);
+        }, visitedInOrder.length * speed + finalPath.length * speed + speed);
 
     }
 
     const visualizePathFindingAlgorithm = (): void => {
         if (algorithm) {
-            const startNode = grid[START_ROW][START_COL];
-            const endNode = grid[END_ROW][END_COL];
+            const startNode = grid[startNodePosition.row][startNodePosition.col];
+            const endNode = grid[endNodePosition.row][endNodePosition.col];
             const { visitedNodesInOrder, finalPath } = algorithm.fn(grid, startNode, endNode);
-            console.log(visitedNodesInOrder);
-            console.log(finalPath);
             animatePath(visitedNodesInOrder, finalPath);
         }
     }
