@@ -18,6 +18,8 @@ export const CreateNode = (row: number, col: number, startRow: number, startCol:
         distance: Infinity,
         isVisited: false,
         isWall: false,
+        isVisitedFront: false,
+        isFinalFront: false,
         isInFinalPath: false,
         previousNode: null,
         gCost: Infinity,

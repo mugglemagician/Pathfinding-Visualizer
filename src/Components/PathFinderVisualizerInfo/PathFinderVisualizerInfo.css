@@ -15,7 +15,7 @@
 }
 
 .pathFinderInfo li {
-    font-size: x-large;
+    font-size: larger;
     color: #021526;
     display: flex;
     justify-content: center;
@@ -55,4 +55,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.algoInfo {
+    font-size: larger;
 }

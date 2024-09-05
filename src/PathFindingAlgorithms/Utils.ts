@@ -7,6 +7,8 @@ export function getShortestPath(node: NodeType): NodeType[] {
         node = node.previousNode;
     }
 
+    shortestPath.push(node);
+
     return shortestPath.reverse();
 }
 

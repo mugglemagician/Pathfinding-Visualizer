@@ -6,7 +6,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .Node:first-child {
@@ -71,6 +70,10 @@
     animation-direction: normal;
     animation-fill-mode: forwards;
     animation-play-state: running;
+}
+
+.Node-Front {
+    background-color: rgb(255, 254, 106);
 }
 
 @keyframes visitedAnimation {

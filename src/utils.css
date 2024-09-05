@@ -2,10 +2,13 @@
     padding: 10px 20px;
     border-radius: 5px;
     border: none;
-    box-shadow: 0.1px 0.1px 3.5px .1px black;
+    box-shadow: 0.1px 0.1px 4px .5px black;
     cursor: pointer;
     color: black;
-    font-size: medium;
+    font-size: small;
+    background-color: #F7E7DC;
+    font-weight: 600;
+    letter-spacing: .5px;
 }
 
 .flex {

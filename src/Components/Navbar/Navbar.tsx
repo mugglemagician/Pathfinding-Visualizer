@@ -9,11 +9,16 @@ function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectSpeed,
         <nav>
             <ul className="navbar">
                 <li className="branding navbar-item">
-                    <h1>Path Finder</h1>
+                    <h1>Path Finderrrrrrr</h1>
                 </li>
 
                 <DropDown dropDownLabel="Algorithms"
                     elements={["Dijkstra", "Depth First Search", "Breadth First Search", "A* Search", "Greedy Best First Search"]}
+                    dropDownWidth="250px"
+                    selectItem={selectAlgorithm} />
+
+                <DropDown dropDownLabel="Mazes & Patterns"
+                    elements={["Recursive Division", "Simple Stair Pattern", "Basic Random Maze", "Basic Weight Maze"]}
                     dropDownWidth="250px"
                     selectItem={selectAlgorithm} />
 

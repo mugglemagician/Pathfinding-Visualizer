@@ -28,6 +28,8 @@ export type NodeType = {
     distance: number,
     gCost: number,
     hCost: number,
+    isVisitedFront: boolean,
+    isFinalFront: boolean,
     getFCost: () => number,
     heapIdx: number,
     isVisited: boolean,
@@ -44,6 +46,8 @@ export type NodePropType = {
     isVisited: boolean,
     isWall: boolean,
     isInFinalPath: boolean,
+    isFront: boolean,
+    isFinalFront: boolean,
     handleMouseDown: (row: number, col: number, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
     handleMouseOver: (row: number, col: number) => void
 }

@@ -20,7 +20,11 @@ function PathFinderVisualizer() {
     const speed = useRef<number>(40);
 
     const startPathFinding = (): void => {
-        if (!algorithm) return;
+        if (!algorithm) {
+            if (isVisualizing.innerText === "Pick Algorithm!") return;
+            setIsVisualizing({ innerText: "Pick Algorithm!", state: false });
+            return;
+        }
         setIsVisualizing({ innerText: "Visualizing " + algorithm.name, state: true });
     }
 

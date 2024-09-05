@@ -74,10 +74,9 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
         const startCol = startNodePosition.current.col;
         const endRow = endNodePosition.current.row;
         const endCol = endNodePosition.current.col;
-
+        if ((row === startRow && col === startCol) || (row === endRow && col === endCol)) return;
         if (!isChangingStartNode.current && !isChangingEndNode.current) setGrid(prevGrid => getNewGridWithWallToggled(prevGrid, row, col));
         else if (isChangingStartNode.current) {
-            if (row === startRow && col === startCol) return;
             setGrid(prevGrid => {
                 const newGrid = [...prevGrid];
                 newGrid[startRow][startCol] = { ...newGrid[startRow][startCol], isStart: false };
@@ -88,7 +87,6 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
             startNodePosition.current.col = col;
         }
         else {
-            if (row === endRow && col === endCol) return;
             setGrid(prevGrid => {
                 const newGrid = [...prevGrid];
                 newGrid[endRow][endCol] = { ...newGrid[endRow][endCol], isEnd: false };
@@ -113,7 +111,12 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
                 setGrid(prevGrid => {
                     const newGrid = [...prevGrid];
                     newGrid[oldNode.row] = [...newGrid[oldNode.row]];
-                    const newNode = { ...oldNode, isVisited: true };
+                    const newNode = { ...oldNode, isVisitedFront: true };
+                    if (i === visitedInOrder.length - 1) { newNode.isVisited = true; }
+                    if (i > 0) {
+                        const prevFront = { ...visitedInOrder[i - 1], isVisited: true, isVisitedFront: false };
+                        newGrid[prevFront.row][prevFront.col] = prevFront;
+                    }
                     newGrid[newNode.row][newNode.col] = newNode;
                     return newGrid;
                 })
@@ -127,11 +130,15 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
                     setGrid(prevGrid => {
                         const newGrid = [...prevGrid];
                         newGrid[node.row] = [...newGrid[node.row]];
-                        const newNode = { ...node, isInFinalPath: true };
+                        const newNode = { ...node, isFinalFront: true, isVisitedFront: true };
+                        if (i > 0) {
+                            const prevNode = { ...finalPath[i - 1], isFinalFront: false, isInFinalPath: true, isVisitedFront: false };
+                            newGrid[prevNode.row][prevNode.col] = prevNode;
+                        }
                         newGrid[newNode.row][newNode.col] = newNode;
                         return newGrid;
                     })
-                }, 30 * i);
+                }, 35 * i);
             })
         }, (speed.current) * visitedInOrder.length);
 
@@ -147,13 +154,9 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
             const startNode = grid[startNodePosition.current.row][startNodePosition.current.col];
             const endNode = grid[endNodePosition.current.row][endNodePosition.current.col];
             const { visitedNodesInOrder, finalPath } = algorithm.fn(grid, startNode, endNode);
-            console.log(visitedNodesInOrder);
-            console.log(finalPath);
-
-            // Ensure animatePath is called with the latest grid state
             animatePath(visitedNodesInOrder, finalPath);
         }
-    }; // Ensure grid and animatePath are dependencies
+    };
 
 
     return (
@@ -178,6 +181,8 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
                                         col={node.col}
                                         isWall={node.isWall}
                                         isInFinalPath={node.isInFinalPath}
+                                        isFront={node.isVisitedFront}
+                                        isFinalFront={node.isFinalFront}
                                     />
                                 );
                             })
