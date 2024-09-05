@@ -1,8 +1,9 @@
 import { NavbarPropType } from "../../types";
 import "./Navbar.css";
 import DropDown from "../DropDown/DropDown";
+import React from "react";
 
-export default function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectSpeed, toggleClearBoard, toggleClearPath, toggleClearWalls }: NavbarPropType) {
+function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectSpeed, toggleClearBoard, toggleClearPath, toggleClearWalls }: NavbarPropType) {
 
     return (
         <nav>
@@ -43,3 +44,5 @@ export default function Navbar({ isVisualizing, startPathFinding, selectAlgorith
         </nav >
     );
 }
+
+export default React.memo(Navbar);

@@ -1,10 +1,12 @@
+import { MutableRefObject } from "react";
+
 export type GridPropType = {
     rows: number,
     cols: number,
     isVisualizing: boolean,
     algorithm: AlgorithmInputType | null,
     resetVisualizing: () => void,
-    speed: number,
+    speed: MutableRefObject<number>,
     clearBoard: boolean,
     clearPath: boolean,
     clearWalls: boolean,

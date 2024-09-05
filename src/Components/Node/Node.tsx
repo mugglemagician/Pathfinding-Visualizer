@@ -2,7 +2,8 @@ import "./Node.css";
 import { NodePropType } from "../../types";
 import React from "react";
 
-export default React.memo(function Node({ row, col, isStart, isEnd, isVisited, isWall, handleMouseDown, handleMouseOver, isInFinalPath }: NodePropType) {
+
+function Node({ row, col, isStart, isEnd, isVisited, isWall, handleMouseDown, handleMouseOver, isInFinalPath }: NodePropType) {
 
     const extraClassName = isStart ? "Node-Start" : isEnd ? "Node-End" : isVisited ? "Node-Visited" : isWall ? "Node-Wall" : isInFinalPath ? "Node-Final-Path" : "";
 
@@ -23,4 +24,6 @@ export default React.memo(function Node({ row, col, isStart, isEnd, isVisited, i
 
         </div >
     );
-});
+}
+
+export default React.memo(Node);

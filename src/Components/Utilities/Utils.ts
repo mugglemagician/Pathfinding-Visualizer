@@ -45,7 +45,9 @@ export const GenerateGrid = (rows: number, cols: number): NodeType[][] => {
 }
 
 export const getNewGridWithWallToggled = (grid: NodeType[][], row: number, col: number): NodeType[][] => {
-    const newGrid = grid.map(row => row.map(node => { return { ...node } }));
+    const newGrid = [...grid];
+    newGrid[row] = [...grid[row]];
+    newGrid[row][col] = { ...newGrid[row][col] };
     newGrid[row][col].isWall = !newGrid[row][col].isWall;
     return newGrid;
 }

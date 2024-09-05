@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Grid from "../Grid/Grid";
 import Navbar from "../Navbar/Navbar";
 import { AlgorithmInputType, isVisualizingType } from "../../types";
@@ -6,20 +6,18 @@ import "./PathFinderVisualizer.css";
 import PathFinderVisualizerInfo from "../PathFinderVisualizerInfo/PathFinderVisualizerInfo";
 import { algorithms } from "../Utilities/Utils";
 
-const speeds = [60, 40, 25];
-
-let algorithm: AlgorithmInputType | null = null;
-
+const speeds = [40, 30, 20];
 const rows = (window.innerHeight - 100) / 30;
 const cols = (window.innerWidth - 100) / 25;
 
-export default React.memo(function PathFinderVisualizer() {
+function PathFinderVisualizer() {
 
     const [isVisualizing, setIsVisualizing] = useState<isVisualizingType>({ innerText: "Visualize", state: false });
-    const [speed, setSpeed] = useState<number>(40);
     const [clearBoard, setClearBoard] = useState<boolean>(false);
     const [clearPath, setClearPath] = useState<boolean>(false);
     const [clearWalls, setClearWalls] = useState<boolean>(false);
+    const [algorithm, setAlgorithm] = useState<AlgorithmInputType | null>(null);
+    const speed = useRef<number>(40);
 
     const startPathFinding = (): void => {
         if (!algorithm) return;
@@ -32,12 +30,13 @@ export default React.memo(function PathFinderVisualizer() {
 
     const selectAlgorithm = (id: number) => {
         if (isVisualizing.state) return;
-        algorithm = algorithms[id];
-        setIsVisualizing({ innerText: "Visualize " + algorithm.name, state: false });
+        setAlgorithm(algorithms[id]);
+        setIsVisualizing({ innerText: "Visualize " + algorithms[id].name, state: false });
     }
 
     const selectSpeed = (id: number) => {
-        setSpeed(speeds[id]);
+        if (isVisualizing.state) return;
+        speed.current = speeds[id];
     }
 
     const toggleClearBoard = () => {
@@ -83,4 +82,6 @@ export default React.memo(function PathFinderVisualizer() {
         </div>
 
     );
-});
+}
+
+export default React.memo(PathFinderVisualizer);
