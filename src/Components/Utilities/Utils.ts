@@ -1,3 +1,4 @@
+import { RecursiveDivision } from "../../PathFindingAlgorithms/MazesAndPatterns/RecursiveDivision";
 import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs } from "../../PathFindingAlgorithms/visualizeAlgorithms";
 import { NodeType } from "../../types";
 
@@ -8,6 +9,11 @@ export const algorithms = [
     { id: 3, name: "A*", fn: visualizeAStar, info: "A* Search is weighted and guarantees the shortest path!" },
     { id: 4, name: "Gbfs", fn: visualizeGbfs, info: "Greedy Best-first Search is weighted and does not guarantees the shortest path!" }
 ];
+
+export const mazeAlgos = [
+    { fn: RecursiveDivision }
+]
+
 
 export const CreateNode = (row: number, col: number, startRow: number, startCol: number, endRow: number, endCol: number): NodeType => {
     return {

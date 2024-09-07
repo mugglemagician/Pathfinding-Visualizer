@@ -5,36 +5,54 @@ import "./Grid.css";
 import React from "react";
 import { CreateNode, GenerateGrid, getNewGridWithWallToggled, ClearBoard, ClearPath, ClearWalls } from "../Utilities/Utils";
 
+const drow = [-1, 0, 1, 0];
+const dcol = [0, -1, 0, 1];
 
-function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, clearBoard, clearPath, clearWalls, toggleClearBoard, toggleClearPath, toggleClearWalls }: GridPropType) {
+
+function Grid({ rows, cols, isVisualizingPath, pathAlgo, resetPathVisualizing, isVisualizingMaze, mazeAlgo, resetMazeVisualizing, speed, clearBoard, clearPath, clearWalls, toggleClearBoard, toggleClearPath, toggleClearWalls }: GridPropType) {
 
     const [grid, setGrid] = useState<NodeType[][]>(() => GenerateGrid(rows, cols));
-    const [startPathFinding, setStartPathFinding] = useState<boolean>(false);
+    const startPathFinding = useRef<boolean>(false);
+    const startMazeGeneration = useRef<boolean>(false);
     const isMousePressed = useRef<boolean>(false);
     const isChangingStartNode = useRef<boolean>(false);
     const isChangingEndNode = useRef<boolean>(false);
     const startNodePosition = useRef<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) - 10 });
     const endNodePosition = useRef<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) + 10 });
 
-    // use useRefs when want some value to be updated in place without causing unneccessary re renders 
+    // use useRefs when want some value to be updated (or persist) in place without causing unneccessary re renders 
     // basically this hook internally maintains same reference accross re renders which helps in maintaining closures
     // should only be used if we have some state like data which does not need any rendering of the ui.
 
     useEffect(() => {
-        if (isVisualizing && algorithm && !startPathFinding) {
-            setStartPathFinding(true);
+
+        if (startPathFinding.current) {
+            visualizePathFindingAlgorithm();
+        }
+        else if (startMazeGeneration.current) {
+            visualizeMazeGenerationAlgorithm();
+        }
+
+        if (isVisualizingPath && pathAlgo && !startPathFinding.current) {
+            startPathFinding.current = true;
             setGrid(prevGrid => {
                 return prevGrid.map(row => row.map(node => {
                     const newNode = CreateNode(node.row, node.col, startNodePosition.current.row, startNodePosition.current.col, endNodePosition.current.row, endNodePosition.current.col);
                     newNode.isWall = node.isWall;
                     return newNode;
                 }));
-            })
+            });
+        }
+        else if (isVisualizingMaze && mazeAlgo && !startMazeGeneration.current) {
+            startMazeGeneration.current = true;
+            setGrid(prevGrid => {
+                return prevGrid.map(row => row.map(node => {
+                    const newNode = CreateNode(node.row, node.col, startNodePosition.current.row, startNodePosition.current.col, endNodePosition.current.row, endNodePosition.current.col);
+                    return newNode;
+                }));
+            });
         }
 
-        if (startPathFinding) {
-            visualizePathFindingAlgorithm();
-        }
 
         if (clearBoard) {
             setGrid(prevGrid => ClearBoard(prevGrid, startNodePosition.current.row, startNodePosition.current.col, endNodePosition.current.row, endNodePosition.current.col));
@@ -49,9 +67,10 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
             toggleClearWalls();
         }
 
-    }, [isVisualizing, startPathFinding, clearBoard, clearPath, clearWalls]);
+    }, [isVisualizingPath, isVisualizingMaze, startMazeGeneration.current, startPathFinding.current, clearBoard, clearPath, clearWalls]);
 
     const handleMouseDown = useCallback((row: number, col: number): void => {
+        if (startMazeGeneration.current || startPathFinding.current) return;
         if (row === startNodePosition.current.row && col === startNodePosition.current.col) {
             isChangingStartNode.current = true;
             isMousePressed.current = true;
@@ -69,6 +88,7 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
 
 
     const handleMouseOver = useCallback((row: number, col: number): void => {
+        if (startMazeGeneration.current || startPathFinding.current) return;
         if (!isMousePressed.current) return;
         const startRow = startNodePosition.current.row;
         const startCol = startNodePosition.current.col;
@@ -99,6 +119,7 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
     }, []);
 
     const handleMouseUp = (): void => {
+        if (startMazeGeneration.current || startPathFinding.current) return;
         isMousePressed.current = false;
         isChangingStartNode.current = false;
         isChangingEndNode.current = false;
@@ -138,25 +159,84 @@ function Grid({ rows, cols, isVisualizing, algorithm, resetVisualizing, speed, c
                         newGrid[newNode.row][newNode.col] = newNode;
                         return newGrid;
                     })
-                }, 35 * i);
+                }, 50 * i);
             })
         }, (speed.current) * visitedInOrder.length);
 
         setTimeout(() => {
-            setStartPathFinding(false);
-            resetVisualizing();
-        }, visitedInOrder.length * speed.current + finalPath.length * speed.current + speed.current);
+            startPathFinding.current = false;
+            resetPathVisualizing();
+        }, visitedInOrder.length * speed.current + finalPath.length * speed.current + speed.current + 200);
 
-    }, [resetVisualizing]);
+    }, [resetPathVisualizing]);
 
     const visualizePathFindingAlgorithm = (): void => {
-        if (algorithm) {
+        if (pathAlgo) {
             const startNode = grid[startNodePosition.current.row][startNodePosition.current.col];
             const endNode = grid[endNodePosition.current.row][endNodePosition.current.col];
-            const { visitedNodesInOrder, finalPath } = algorithm.fn(grid, startNode, endNode);
+            const { visitedNodesInOrder, finalPath } = pathAlgo.fn(grid, startNode, endNode);
             animatePath(visitedNodesInOrder, finalPath);
         }
     };
+
+    const animateWalls = (walledNodesInOrder: Set<NodeType>): void => {
+        let idx = 0;
+        walledNodesInOrder.forEach((node) => {
+            setTimeout(() => {
+                setGrid(prevGrid => {
+                    const newGrid = [...prevGrid];
+                    newGrid[node.row][node.col] = { ...newGrid[node.row][node.col], isWall: true };
+                    return newGrid;
+                });
+
+            }, 20 * idx++);
+            if (idx === walledNodesInOrder.size - 1) {
+                setTimeout(() => {
+                    startMazeGeneration.current = false;
+                    resetMazeVisualizing();
+                }, 20 * (walledNodesInOrder.size) + 200);
+            }
+        });
+    }
+
+    const visualizeMazeGenerationAlgorithm = (): void => {
+        if (mazeAlgo) {
+            const walledNodesInOrderSet = mazeAlgo.fn(grid);
+            const startRow = startNodePosition.current.row;
+            const startCol = startNodePosition.current.col;
+            const endRow = endNodePosition.current.row;
+            const endCol = endNodePosition.current.col;
+
+            if (walledNodesInOrderSet.has(grid[startRow][startCol])) {
+                walledNodesInOrderSet.delete(grid[startRow][startCol]);
+                for (let i = 0; i < 4; i++) {
+                    let nrow = startRow + drow[i];
+                    let ncol = startCol + dcol[i];
+                    if (nrow >= 0 && ncol >= 0 && nrow < grid.length && ncol < grid[0].length) {
+                        if (walledNodesInOrderSet.has(grid[nrow][ncol])) {
+                            walledNodesInOrderSet.delete(grid[nrow][ncol]);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (walledNodesInOrderSet.has(grid[endRow][endCol])) {
+                walledNodesInOrderSet.delete(grid[endRow][endCol]);
+                for (let i = 0; i < 4; i++) {
+                    let nrow = endRow + drow[i];
+                    let ncol = endCol + dcol[i];
+                    if (nrow >= 0 && ncol >= 0 && nrow < grid.length && ncol < grid[0].length) {
+                        if (walledNodesInOrderSet.has(grid[nrow][ncol])) {
+                            walledNodesInOrderSet.delete(grid[nrow][ncol]);
+                            break;
+                        }
+                    }
+                }
+            }
+            animateWalls(walledNodesInOrderSet);
+        }
+    }
 
 
     return (

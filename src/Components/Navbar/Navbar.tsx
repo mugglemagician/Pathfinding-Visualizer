@@ -3,7 +3,7 @@ import "./Navbar.css";
 import DropDown from "../DropDown/DropDown";
 import React from "react";
 
-function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectSpeed, toggleClearBoard, toggleClearPath, toggleClearWalls }: NavbarPropType) {
+function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectMazeAlgo, selectSpeed, toggleClearBoard, toggleClearPath, toggleClearWalls }: NavbarPropType) {
 
     return (
         <nav>
@@ -20,7 +20,7 @@ function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectSpeed,
                 <DropDown dropDownLabel="Mazes & Patterns"
                     elements={["Recursive Division", "Simple Stair Pattern", "Basic Random Maze", "Basic Weight Maze"]}
                     dropDownWidth="250px"
-                    selectItem={selectAlgorithm} />
+                    selectItem={selectMazeAlgo} />
 
                 <li className="visualize navbar-item">
                     <button onClick={startPathFinding} className="button">

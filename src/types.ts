@@ -3,9 +3,12 @@ import { MutableRefObject } from "react";
 export type GridPropType = {
     rows: number,
     cols: number,
-    isVisualizing: boolean,
-    algorithm: AlgorithmInputType | null,
-    resetVisualizing: () => void,
+    isVisualizingPath: boolean,
+    pathAlgo: PathAlgoType | null,
+    resetPathVisualizing: () => void,
+    isVisualizingMaze: boolean,
+    mazeAlgo: MazeAlgoType | null,
+    resetMazeVisualizing: () => void,
     speed: MutableRefObject<number>,
     clearBoard: boolean,
     clearPath: boolean,
@@ -56,6 +59,7 @@ export type NavbarPropType = {
     isVisualizing: isVisualizingType,
     startPathFinding: () => void,
     selectAlgorithm: (id: number) => void,
+    selectMazeAlgo: (id: number) => void,
     selectSpeed: (id: number) => void,
     toggleClearBoard: () => void,
     toggleClearPath: () => void,
@@ -78,9 +82,13 @@ export type AlgorithmReturnType = {
     finalPath: NodeType[]
 }
 
-export type AlgorithmInputType = {
+export type PathAlgoType = {
     id: number,
     name: string,
     info: string,
     fn: (grid: NodeType[][], startNode: NodeType, endNode: NodeType) => AlgorithmReturnType
+}
+
+export type MazeAlgoType = {
+    fn: (grid: NodeType[][]) => Set<NodeType>
 }

@@ -1,81 +1,101 @@
 import React, { useRef, useState } from "react";
 import Grid from "../Grid/Grid";
 import Navbar from "../Navbar/Navbar";
-import { AlgorithmInputType, isVisualizingType } from "../../types";
+import { PathAlgoType, isVisualizingType, MazeAlgoType } from "../../types";
 import "./PathFinderVisualizer.css";
 import PathFinderVisualizerInfo from "../PathFinderVisualizerInfo/PathFinderVisualizerInfo";
-import { algorithms } from "../Utilities/Utils";
+import { algorithms, mazeAlgos } from "../Utilities/Utils";
 
 const speeds = [40, 30, 20];
-const rows = (window.innerHeight - 100) / 30;
+const rows = (window.innerHeight - 100) / 30;;
 const cols = (window.innerWidth - 100) / 25;
 
 function PathFinderVisualizer() {
 
-    const [isVisualizing, setIsVisualizing] = useState<isVisualizingType>({ innerText: "Visualize", state: false });
+    const [visualizePath, setVisualizePath] = useState<isVisualizingType>({ innerText: "Visualize", state: false });
+    const [pathAlgo, setPathAlgo] = useState<PathAlgoType | null>(null);
+    const [visualizeMaze, setVisualizeMaze] = useState<boolean>(false);
+    const [mazeAlgo, setMazeAlgo] = useState<MazeAlgoType | null>(null);
     const [clearBoard, setClearBoard] = useState<boolean>(false);
     const [clearPath, setClearPath] = useState<boolean>(false);
     const [clearWalls, setClearWalls] = useState<boolean>(false);
-    const [algorithm, setAlgorithm] = useState<AlgorithmInputType | null>(null);
     const speed = useRef<number>(40);
 
+    // the things are set up so that if i am visualizing any algorithm i will not be able to do anything else (be it be maze or path finding algorithm)
+
     const startPathFinding = (): void => {
-        if (!algorithm) {
-            if (isVisualizing.innerText === "Pick Algorithm!") return;
-            setIsVisualizing({ innerText: "Pick Algorithm!", state: false });
+        if (visualizeMaze) return;
+        if (!pathAlgo) {
+            if (visualizePath.innerText === "Pick Algorithm!") return;
+            setVisualizePath({ innerText: "Pick Algorithm!", state: false });
             return;
         }
-        setIsVisualizing({ innerText: "Visualizing " + algorithm.name, state: true });
+        setVisualizePath({ innerText: "Visualizing " + pathAlgo.name, state: true });
     }
 
-    const resetVisualizing = (): void => {
-        setIsVisualizing({ innerText: "Visualize " + algorithm?.name, state: false });
+    const resetPathVisualizing = (): void => {
+        setVisualizePath({ innerText: "Visualize " + pathAlgo?.name, state: false });
+    }
+
+    const resetMazeVisualizing = (): void => {
+        setMazeAlgo(null);
+        setVisualizeMaze(false);
     }
 
     const selectAlgorithm = (id: number) => {
-        if (isVisualizing.state) return;
-        setAlgorithm(algorithms[id]);
-        setIsVisualizing({ innerText: "Visualize " + algorithms[id].name, state: false });
+        if (visualizePath.state || visualizeMaze) return;
+        setPathAlgo(algorithms[id]);
+        setVisualizePath({ innerText: "Visualize " + algorithms[id].name, state: false });
+    }
+
+    const selectMazeAlgo = (id: number) => {
+        if (visualizePath.state || visualizeMaze) return;
+        setMazeAlgo(mazeAlgos[id]);
+        setVisualizeMaze(true);
     }
 
     const selectSpeed = (id: number) => {
-        if (isVisualizing.state) return;
+        if (visualizePath.state || visualizeMaze) return;
         speed.current = speeds[id];
     }
 
     const toggleClearBoard = () => {
-        if (isVisualizing.state) return;
+        if (visualizePath.state || visualizeMaze) return;
         setClearBoard(prev => !prev);
     }
 
     const toggleClearPath = () => {
-        if (isVisualizing.state) return;
+        if (visualizePath.state || visualizeMaze) return;
         setClearPath(prev => !prev);
     }
 
     const toggleClearWalls = () => {
-        if (isVisualizing.state) return;
+        if (visualizePath.state || visualizeMaze) return;
         setClearWalls(prev => !prev);
     }
 
     return (
         <div className="pathFinder">
-            <Navbar isVisualizing={isVisualizing}
+            <Navbar isVisualizing={visualizePath}
                 startPathFinding={startPathFinding}
                 selectAlgorithm={selectAlgorithm}
                 selectSpeed={selectSpeed}
                 toggleClearBoard={toggleClearBoard}
                 toggleClearPath={toggleClearPath}
                 toggleClearWalls={toggleClearWalls}
+                selectMazeAlgo={selectMazeAlgo}
             />
 
-            <PathFinderVisualizerInfo algoInfo={algorithm ? algorithm.info : "Pick an algorithm to visualize!"} />
+            <PathFinderVisualizerInfo algoInfo={pathAlgo ? pathAlgo.info : "Pick an algorithm to visualize!"} />
 
             <Grid rows={rows}
                 cols={cols}
-                isVisualizing={isVisualizing.state}
-                algorithm={algorithm}
-                resetVisualizing={resetVisualizing}
+                isVisualizingPath={visualizePath.state}
+                pathAlgo={pathAlgo}
+                resetPathVisualizing={resetPathVisualizing}
+                isVisualizingMaze={visualizeMaze}
+                mazeAlgo={mazeAlgo}
+                resetMazeVisualizing={resetMazeVisualizing}
                 speed={speed}
                 clearBoard={clearBoard}
                 clearPath={clearPath}
