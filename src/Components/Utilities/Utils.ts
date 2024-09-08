@@ -1,8 +1,7 @@
-import { RecursiveDivision } from "../../PathFindingAlgorithms/MazesAndPatterns/RecursiveDivision";
-import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs } from "../../PathFindingAlgorithms/visualizeAlgorithms";
+import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs, visualizeRecursiveBackTracker, visualizeRecursiveDivision } from "../../PathFindingAlgorithms/visualizeAlgorithms";
 import { NodeType } from "../../types";
 
-export const algorithms = [
+export const pathAlgos = [
     { id: 0, name: "dijkstra", fn: visualizeDijkstra, info: "Dijkstra's algorithm is weighted and guarantees the shortest path!" },
     { id: 1, name: "dfs", fn: visualizeDfs, info: "Depth-first Search is unweighted and does not guarantees the shortest path" },
     { id: 2, name: "bfs", fn: visualizeBfs, info: "Breadth-first Search is weighted and guarantees the shortest path" },
@@ -11,7 +10,8 @@ export const algorithms = [
 ];
 
 export const mazeAlgos = [
-    { fn: RecursiveDivision }
+    { fn: visualizeRecursiveDivision },
+    { fn: visualizeRecursiveBackTracker }
 ]
 
 

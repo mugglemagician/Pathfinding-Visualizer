@@ -18,7 +18,7 @@ function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectMazeAl
                     selectItem={selectAlgorithm} />
 
                 <DropDown dropDownLabel="Mazes & Patterns"
-                    elements={["Recursive Division", "Simple Stair Pattern", "Basic Random Maze", "Basic Weight Maze"]}
+                    elements={["Recursive Division", "Recursive Backtracker"]}
                     dropDownWidth="250px"
                     selectItem={selectMazeAlgo} />
 

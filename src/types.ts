@@ -90,5 +90,10 @@ export type PathAlgoType = {
 }
 
 export type MazeAlgoType = {
-    fn: (grid: NodeType[][]) => Set<NodeType>
+    fn: (grid: NodeType[][]) => MazeAlgoReturnType
+}
+
+export type MazeAlgoReturnType = {
+    walledNodes: Set<NodeType>,
+    carvedPath: NodeType[] | undefined
 }

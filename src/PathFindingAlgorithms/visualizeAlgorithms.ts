@@ -1,9 +1,11 @@
-import { AlgorithmReturnType, NodeType } from "../types";
+import { AlgorithmReturnType, MazeAlgoReturnType, NodeType } from "../types";
 import { AStarSearch } from "./AStarSearch";
 import { BreadthFirstSearch } from "./BreadthFirstSearch";
 import { DepthFirstSearch } from "./DepthFirstSearch";
 import { Dijkstra } from "./Dijkstra";
 import { GreedyBestFirstSearch } from "./GreedyBestFirstSearch";
+import { RecursiveBacktracker } from "./MazesAndPatterns/RecursiveBacktracker";
+import { RecursiveDivision } from "./MazesAndPatterns/RecursiveDivision";
 import { getShortestPath } from "./Utils";
 
 export function visualizeDijkstra(grid: NodeType[][], startNode: NodeType, endNode: NodeType): AlgorithmReturnType {
@@ -33,4 +35,13 @@ export function visualizeGbfs(grid: NodeType[][], startNode: NodeType, endNode: 
     const visitedNodesInOrder = GreedyBestFirstSearch(grid, startNode, endNode);
     const finalPath = getShortestPath(endNode);
     return { visitedNodesInOrder, finalPath };
+}
+
+export function visualizeRecursiveDivision(grid: NodeType[][]): MazeAlgoReturnType {
+    const walledNodes = RecursiveDivision(grid);
+    return { walledNodes, carvedPath: undefined };
+}
+
+export function visualizeRecursiveBackTracker(grid: NodeType[][]): MazeAlgoReturnType {
+    return RecursiveBacktracker(grid);
 }

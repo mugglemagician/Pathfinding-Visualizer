@@ -4,7 +4,7 @@ import Navbar from "../Navbar/Navbar";
 import { PathAlgoType, isVisualizingType, MazeAlgoType } from "../../types";
 import "./PathFinderVisualizer.css";
 import PathFinderVisualizerInfo from "../PathFinderVisualizerInfo/PathFinderVisualizerInfo";
-import { algorithms, mazeAlgos } from "../Utilities/Utils";
+import { pathAlgos, mazeAlgos } from "../Utilities/Utils";
 
 const speeds = [40, 30, 20];
 const rows = (window.innerHeight - 100) / 30;;
@@ -44,8 +44,8 @@ function PathFinderVisualizer() {
 
     const selectAlgorithm = (id: number) => {
         if (visualizePath.state || visualizeMaze) return;
-        setPathAlgo(algorithms[id]);
-        setVisualizePath({ innerText: "Visualize " + algorithms[id].name, state: false });
+        setPathAlgo(pathAlgos[id]);
+        setVisualizePath({ innerText: "Visualize " + pathAlgos[id].name, state: false });
     }
 
     const selectMazeAlgo = (id: number) => {

@@ -1,4 +1,5 @@
 import { NodeType } from "../../types";
+import { addBoundaryWalls } from "../Utils";
 
 
 enum Orientation {
@@ -6,7 +7,29 @@ enum Orientation {
     VERTICAL,
 }
 
-function recursiveDivisionMaze(
+export function RecursiveDivision(grid: NodeType[][]): Set<NodeType> {
+    const walledNodes = new Set<NodeType>();
+    let startNode: NodeType | null = null;
+    let endNode: NodeType | null = null;
+
+    for (let row of grid) {
+        for (let node of row) {
+            if (node.isStart) {
+                startNode = node;
+            }
+            else if (node.isEnd) {
+                endNode = node;
+            }
+        }
+    }
+
+    addBoundaryWalls(grid, walledNodes);
+    divide(grid, 2, grid.length - 3, 2, grid[0].length - 3, chooseOrientation(grid[0].length, grid.length), walledNodes, startNode, endNode);
+    return walledNodes;
+}
+
+
+function divide(
     grid: NodeType[][],
     rowStart: number,
     rowEnd: number,
@@ -42,7 +65,7 @@ function recursiveDivisionMaze(
         }
 
         // Recursively divide above and below the wall
-        recursiveDivisionMaze(
+        divide(
             grid, rowStart, randRow - 2, colStart, colEnd,
             chooseOrientation(colEnd - colStart, randRow - 2 - rowStart),
             walledNodes,
@@ -50,7 +73,7 @@ function recursiveDivisionMaze(
             endNode
         );
 
-        recursiveDivisionMaze(
+        divide(
             grid, randRow + 2, rowEnd, colStart, colEnd,
             chooseOrientation(colEnd - colStart, rowEnd - (randRow + 2)),
             walledNodes,
@@ -79,7 +102,7 @@ function recursiveDivisionMaze(
         }
 
         // Recursively divide left and right of the wall
-        recursiveDivisionMaze(
+        divide(
             grid, rowStart, rowEnd, colStart, randCol - 2,
             chooseOrientation(randCol - 2 - colStart, rowEnd - rowStart),
             walledNodes,
@@ -87,7 +110,7 @@ function recursiveDivisionMaze(
             endNode
         );
 
-        recursiveDivisionMaze(
+        divide(
             grid, rowStart, rowEnd, randCol + 2, colEnd,
             chooseOrientation(colEnd - (randCol + 2), rowEnd - rowStart),
             walledNodes,
@@ -97,18 +120,7 @@ function recursiveDivisionMaze(
     }
 }
 
-function addBoundaryWalls(grid: NodeType[][], walledNodes: Set<NodeType>) {
-    for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < grid[0].length; j++) {
-            if (i === 0 || j === 0 || i === grid.length - 1 || j === grid[0].length - 1) {
-                const node = grid[i][j];
-                if (!node.isStart && !node.isEnd) {
-                    walledNodes.add(node);
-                }
-            }
-        }
-    }
-}
+
 
 function chooseOrientation(width: number, height: number): Orientation {
     if (width < height) {
@@ -120,23 +132,3 @@ function chooseOrientation(width: number, height: number): Orientation {
     }
 }
 
-export function RecursiveDivision(grid: NodeType[][]): Set<NodeType> {
-    const walledNodes = new Set<NodeType>();
-    let startNode: NodeType | null = null;
-    let endNode: NodeType | null = null;
-
-    for (let row of grid) {
-        for (let node of row) {
-            if (node.isStart) {
-                startNode = node;
-            }
-            else if (node.isEnd) {
-                endNode = node;
-            }
-        }
-    }
-
-    addBoundaryWalls(grid, walledNodes);
-    recursiveDivisionMaze(grid, 2, grid.length - 3, 2, grid[0].length - 3, chooseOrientation(grid[0].length, grid.length), walledNodes, startNode, endNode);
-    return walledNodes;
-}

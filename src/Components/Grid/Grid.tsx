@@ -179,9 +179,9 @@ function Grid({ rows, cols, isVisualizingPath, pathAlgo, resetPathVisualizing, i
         }
     };
 
-    const animateWalls = (walledNodesInOrder: Set<NodeType>): void => {
+    const animateWalls = (walledNodes: Set<NodeType>, carvedPath: (NodeType[] | undefined)): void => {
         let idx = 0;
-        walledNodesInOrder.forEach((node) => {
+        walledNodes.forEach((node) => {
             setTimeout(() => {
                 setGrid(prevGrid => {
                     const newGrid = [...prevGrid];
@@ -189,52 +189,65 @@ function Grid({ rows, cols, isVisualizingPath, pathAlgo, resetPathVisualizing, i
                     return newGrid;
                 });
 
-            }, 20 * idx++);
-            if (idx === walledNodesInOrder.size - 1) {
-                setTimeout(() => {
-                    startMazeGeneration.current = false;
-                    resetMazeVisualizing();
-                }, 20 * (walledNodesInOrder.size) + 200);
-            }
+            }, 2 * idx++);
         });
+
+        if (carvedPath) {
+            carvedPath.forEach((node, i) => {
+                setTimeout(() => {
+                    setGrid(prevGrid => {
+                        const newGrid = [...prevGrid];
+                        newGrid[node.row][node.col] = { ...newGrid[node.row][node.col], isWall: false };
+                        return newGrid;
+                    });
+                }, 2 * walledNodes.size + 100 + 20 * i);
+            });
+
+        }
+
+        setTimeout(() => {
+            startMazeGeneration.current = false;
+            resetMazeVisualizing();
+        }, 2 * walledNodes.size + (carvedPath ? 20 * carvedPath.length : 0) + 200);
+
     }
 
     const visualizeMazeGenerationAlgorithm = (): void => {
         if (mazeAlgo) {
-            const walledNodesInOrderSet = mazeAlgo.fn(grid);
+            const { walledNodes, carvedPath } = mazeAlgo.fn(grid);
             const startRow = startNodePosition.current.row;
             const startCol = startNodePosition.current.col;
             const endRow = endNodePosition.current.row;
             const endCol = endNodePosition.current.col;
 
-            if (walledNodesInOrderSet.has(grid[startRow][startCol])) {
-                walledNodesInOrderSet.delete(grid[startRow][startCol]);
+            if (walledNodes.has(grid[startRow][startCol])) {
+                walledNodes.delete(grid[startRow][startCol]);
                 for (let i = 0; i < 4; i++) {
                     let nrow = startRow + drow[i];
                     let ncol = startCol + dcol[i];
                     if (nrow >= 0 && ncol >= 0 && nrow < grid.length && ncol < grid[0].length) {
-                        if (walledNodesInOrderSet.has(grid[nrow][ncol])) {
-                            walledNodesInOrderSet.delete(grid[nrow][ncol]);
+                        if (walledNodes.has(grid[nrow][ncol])) {
+                            walledNodes.delete(grid[nrow][ncol]);
                             break;
                         }
                     }
                 }
             }
 
-            if (walledNodesInOrderSet.has(grid[endRow][endCol])) {
-                walledNodesInOrderSet.delete(grid[endRow][endCol]);
+            if (walledNodes.has(grid[endRow][endCol])) {
+                walledNodes.delete(grid[endRow][endCol]);
                 for (let i = 0; i < 4; i++) {
                     let nrow = endRow + drow[i];
                     let ncol = endCol + dcol[i];
                     if (nrow >= 0 && ncol >= 0 && nrow < grid.length && ncol < grid[0].length) {
-                        if (walledNodesInOrderSet.has(grid[nrow][ncol])) {
-                            walledNodesInOrderSet.delete(grid[nrow][ncol]);
+                        if (walledNodes.has(grid[nrow][ncol])) {
+                            walledNodes.delete(grid[nrow][ncol]);
                             break;
                         }
                     }
                 }
             }
-            animateWalls(walledNodesInOrderSet);
+            animateWalls(walledNodes, carvedPath);
         }
     }
 
