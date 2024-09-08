@@ -1,18 +1,20 @@
-import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs, visualizeKruskal, visualizeRecursiveBackTracker, visualizeRecursiveDivision } from "../../PathFindingAlgorithms/visualizeAlgorithms";
+import { visualizeAStar, visualizeBfs, visualizeConcentric, visualizeDfs, visualizeDijkstra, visualizeGbfs, visualizeKruskal, visualizeRecursiveBackTracker, visualizeRecursiveDivision, visualizeSimpleStair } from "../../PathFindingAlgorithms/visualizeAlgorithms";
 import { NodeType } from "../../types";
 
 export const pathAlgos = [
     { id: 0, name: "dijkstra", fn: visualizeDijkstra, info: "Dijkstra's algorithm is weighted and guarantees the shortest path!" },
-    { id: 1, name: "dfs", fn: visualizeDfs, info: "Depth-first Search is unweighted and does not guarantees the shortest path" },
-    { id: 2, name: "bfs", fn: visualizeBfs, info: "Breadth-first Search is weighted and guarantees the shortest path" },
-    { id: 3, name: "A*", fn: visualizeAStar, info: "A* Search is weighted and guarantees the shortest path!" },
-    { id: 4, name: "Gbfs", fn: visualizeGbfs, info: "Greedy Best-first Search is weighted and does not guarantees the shortest path!" }
+    { id: 1, name: "bfs", fn: visualizeBfs, info: "Breadth-first Search is weighted and guarantees the shortest path" },
+    { id: 2, name: "A*", fn: visualizeAStar, info: "A* Search is weighted and guarantees the shortest path!" },
+    { id: 3, name: "Gbfs", fn: visualizeGbfs, info: "Greedy Best-first Search is weighted and does not guarantees the shortest path!" },
+    { id: 4, name: "dfs", fn: visualizeDfs, info: "Depth-first Search is unweighted and does not guarantees the shortest path" }
 ];
 
 export const mazeAlgos = [
     { fn: visualizeRecursiveDivision },
     { fn: visualizeRecursiveBackTracker },
-    { fn: visualizeKruskal }
+    { fn: visualizeKruskal },
+    { fn: visualizeSimpleStair },
+    { fn: visualizeConcentric }
 ]
 
 

@@ -97,3 +97,17 @@ export type MazeAlgoReturnType = {
     walledNodes: Set<NodeType>,
     carvedPath: NodeType[] | undefined
 }
+
+export type Vector = {
+    x: number,
+    y: number
+}
+
+export type Agent = {
+    position: Vector,
+    velocity: Vector,
+    maxSpeed: number,
+    maxForce: number
+}
+
+export type Force = Vector;

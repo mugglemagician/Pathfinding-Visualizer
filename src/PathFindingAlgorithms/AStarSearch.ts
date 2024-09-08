@@ -10,7 +10,7 @@ const dcol = [0, -1, 0, 1];
 // hcost -> distance from end node to current node -> heuristic distance
 // fcost -> gcost + hcost
 
-export function AStarSearch(grid: NodeType[][], startNode: NodeType, endNode: NodeType) {
+export function AStarSearch(grid: NodeType[][], startNode: NodeType, endNode: NodeType): NodeType[] {
     const pq = new PriorityQueue<NodeType>((node1, node2) => {
         if (node1.getFCost() < node2.getFCost()) return true;
         if (node1.hCost < node2.hCost) return true;

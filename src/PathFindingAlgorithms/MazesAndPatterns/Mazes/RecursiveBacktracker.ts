@@ -1,5 +1,5 @@
-import { NodeType } from "../../types";
-import { addBoundaryWalls, addNodeBoundaryWalls, carvePath } from "../Utils";
+import { NodeType } from "../../../types";
+import { addBoundaryWalls, addNodeBoundaryWalls, carvePath } from "../../Utils";
 
 const drow = [-1, 0, 1, 0];
 const dcol = [0, -1, 0, 1];

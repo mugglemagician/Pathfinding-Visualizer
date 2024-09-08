@@ -13,12 +13,12 @@ function Navbar({ isVisualizing, startPathFinding, selectAlgorithm, selectMazeAl
                 </li>
 
                 <DropDown dropDownLabel="Algorithms"
-                    elements={["Dijkstra", "Depth First Search", "Breadth First Search", "A* Search", "Greedy Best First Search"]}
+                    elements={["Dijkstra", "Breadth First Search", "A* Search", "Greedy Best First Search", "Depth First Search"]}
                     dropDownWidth="250px"
                     selectItem={selectAlgorithm} />
 
                 <DropDown dropDownLabel="Mazes & Patterns"
-                    elements={["Recursive Division", "Recursive Backtracker", "Kruskal"]}
+                    elements={["Recursive Division", "Recursive Backtracker", "Kruskal's", "Simple Stair Pattern", "Concentric Pattern"]}
                     dropDownWidth="250px"
                     selectItem={selectMazeAlgo} />
 

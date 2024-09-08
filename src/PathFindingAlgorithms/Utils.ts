@@ -1,4 +1,4 @@
-import { NodeType } from "../types";
+import { Agent, Force, NodeType, Vector } from "../types";
 
 export function getShortestPath(node: NodeType): NodeType[] {
     const shortestPath: NodeType[] = [];
@@ -60,4 +60,11 @@ export function carvePath(grid: NodeType[][], row: number, col: number, nrow: nu
             carvedPath.push(grid[2 * nrow + 2][2 * col + 1]);
         }
     }
+}
+
+export function shuffeArray(array: number[][]): number[][] {
+    return array
+        .map(value => ({ value, sortKey: Math.random() }))
+        .sort((a, b) => a.sortKey - b.sortKey)
+        .map(({ value }) => value);
 }

@@ -1,13 +1,8 @@
-import { NodeType } from "../../types";
-import { UnionFind } from "../DataStructures/UnionFind";
-import { addBoundaryWalls, addNodeBoundaryWalls, carvePath } from "../Utils";
+import { NodeType } from "../../../types";
+import { UnionFind } from "../../DataStructures/UnionFind";
+import { addBoundaryWalls, addNodeBoundaryWalls, carvePath, shuffeArray } from "../../Utils";
 
-function shuffeArray(array: number[][]): number[][] {
-    return array
-        .map(value => ({ value, sortKey: Math.random() }))
-        .sort((a, b) => a.sortKey - b.sortKey)
-        .map(({ value }) => value);
-}
+
 
 export function Kruskal(grid: NodeType[][]): { walledNodes: Set<NodeType>, carvedPath: NodeType[] } {
     const walledNodes = new Set<NodeType>();

@@ -1,5 +1,5 @@
-import { NodeType } from "../../types";
-import { addBoundaryWalls } from "../Utils";
+import { NodeType } from "../../../types";
+import { addBoundaryWalls } from "../../Utils";
 
 
 enum Orientation {
