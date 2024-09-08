@@ -1,4 +1,4 @@
-import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs, visualizeRecursiveBackTracker, visualizeRecursiveDivision } from "../../PathFindingAlgorithms/visualizeAlgorithms";
+import { visualizeAStar, visualizeBfs, visualizeDfs, visualizeDijkstra, visualizeGbfs, visualizeKruskal, visualizeRecursiveBackTracker, visualizeRecursiveDivision } from "../../PathFindingAlgorithms/visualizeAlgorithms";
 import { NodeType } from "../../types";
 
 export const pathAlgos = [
@@ -11,7 +11,8 @@ export const pathAlgos = [
 
 export const mazeAlgos = [
     { fn: visualizeRecursiveDivision },
-    { fn: visualizeRecursiveBackTracker }
+    { fn: visualizeRecursiveBackTracker },
+    { fn: visualizeKruskal }
 ]
 
 

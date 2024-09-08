@@ -28,3 +28,36 @@ export function addBoundaryWalls(grid: NodeType[][], walledNodes: Set<NodeType>)
         }
     }
 }
+
+export const addNodeBoundaryWalls = (grid: NodeType[][], walledNodes: Set<NodeType>): void => {
+    for (let row = 2; row < grid.length - 2; row += 2) {
+        for (let col = 1; col < grid[0].length - 1; col++) {
+            walledNodes.add(grid[row][col]);
+        }
+    }
+
+    for (let col = 2; col < grid[0].length - 2; col += 2) {
+        for (let row = 1; row < grid.length; row++) {
+            walledNodes.add(grid[row][col]);
+        }
+    }
+};
+
+export function carvePath(grid: NodeType[][], row: number, col: number, nrow: number, ncol: number, carvedPath: NodeType[]) {
+    if (row === nrow) {
+        if (col < ncol) {
+            carvedPath.push(grid[2 * row + 1][2 * col + 2]);
+        }
+        else {
+            carvedPath.push(grid[2 * row + 1][2 * ncol + 2]);
+        }
+    }
+    else {
+        if (row < nrow) {
+            carvedPath.push(grid[2 * row + 2][2 * col + 1]);
+        }
+        else {
+            carvedPath.push(grid[2 * nrow + 2][2 * col + 1]);
+        }
+    }
+}

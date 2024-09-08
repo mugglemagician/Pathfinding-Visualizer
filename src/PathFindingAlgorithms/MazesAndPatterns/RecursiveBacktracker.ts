@@ -1,24 +1,10 @@
 import { NodeType } from "../../types";
-import { addBoundaryWalls } from "../Utils";
+import { addBoundaryWalls, addNodeBoundaryWalls, carvePath } from "../Utils";
 
 const drow = [-1, 0, 1, 0];
 const dcol = [0, -1, 0, 1];
 
 // 2 * (R) + 1 = grid.length - 2 => 2 * R = grid.length - 3 => R = (grid.length - 3) / 2
-
-const addNodeBoundaryWalls = (grid: NodeType[][], walledNodes: Set<NodeType>): void => {
-    for (let row = 2; row < grid.length - 2; row += 2) {
-        for (let col = 1; col < grid[0].length - 1; col++) {
-            walledNodes.add(grid[row][col]);
-        }
-    }
-
-    for (let col = 2; col < grid[0].length - 2; col += 2) {
-        for (let row = 1; row < grid.length; row++) {
-            walledNodes.add(grid[row][col]);
-        }
-    }
-};
 
 export function RecursiveBacktracker(grid: NodeType[][]): { walledNodes: Set<NodeType>, carvedPath: NodeType[] } {
     const walledNodes = new Set<NodeType>();
@@ -67,21 +53,4 @@ export function RecursiveBacktracker(grid: NodeType[][]): { walledNodes: Set<Nod
     return { walledNodes, carvedPath };
 }
 
-function carvePath(grid: NodeType[][], row: number, col: number, nrow: number, ncol: number, carvedPath: NodeType[]) {
-    if (row === nrow) {
-        if (col < ncol) {
-            carvedPath.push(grid[2 * row + 1][2 * col + 2]);
-        }
-        else {
-            carvedPath.push(grid[2 * row + 1][2 * ncol + 2]);
-        }
-    }
-    else {
-        if (row < nrow) {
-            carvedPath.push(grid[2 * row + 2][2 * col + 1]);
-        }
-        else {
-            carvedPath.push(grid[2 * nrow + 2][2 * col + 1]);
-        }
-    }
-}
+

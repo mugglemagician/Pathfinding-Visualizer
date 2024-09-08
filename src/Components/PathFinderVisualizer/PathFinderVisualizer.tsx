@@ -7,8 +7,10 @@ import PathFinderVisualizerInfo from "../PathFinderVisualizerInfo/PathFinderVisu
 import { pathAlgos, mazeAlgos } from "../Utilities/Utils";
 
 const speeds = [40, 30, 20];
-const rows = (window.innerHeight - 100) / 30;;
-const cols = (window.innerWidth - 100) / 25;
+let rows = Math.floor((window.innerHeight - 100) / 30);
+if (rows % 2 === 0) rows--;
+let cols = Math.floor((window.innerWidth) / 25);
+if (cols % 2 === 0) cols--;
 
 function PathFinderVisualizer() {
 

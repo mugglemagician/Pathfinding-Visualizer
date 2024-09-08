@@ -4,6 +4,7 @@ import { BreadthFirstSearch } from "./BreadthFirstSearch";
 import { DepthFirstSearch } from "./DepthFirstSearch";
 import { Dijkstra } from "./Dijkstra";
 import { GreedyBestFirstSearch } from "./GreedyBestFirstSearch";
+import { Kruskal } from "./MazesAndPatterns/Kruskal";
 import { RecursiveBacktracker } from "./MazesAndPatterns/RecursiveBacktracker";
 import { RecursiveDivision } from "./MazesAndPatterns/RecursiveDivision";
 import { getShortestPath } from "./Utils";
@@ -44,4 +45,9 @@ export function visualizeRecursiveDivision(grid: NodeType[][]): MazeAlgoReturnTy
 
 export function visualizeRecursiveBackTracker(grid: NodeType[][]): MazeAlgoReturnType {
     return RecursiveBacktracker(grid);
+}
+
+export function visualizeKruskal(grid: NodeType[][]): MazeAlgoReturnType {
+    const { walledNodes, carvedPath } = Kruskal(grid);
+    return { walledNodes, carvedPath };
 }
