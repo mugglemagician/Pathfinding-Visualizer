@@ -13,8 +13,11 @@ nav {
     height: 100%;
     display: flex;
     justify-content: space-around;
-    align-content: center;
+    align-items: center;
+    align-content: start;
     flex-wrap: wrap;
+    gap: 50px;
+    padding: 10px 4px;
 }
 
 
@@ -24,7 +27,6 @@ nav {
     align-items: center;
     cursor: pointer;
     font-weight: 400;
-    font-size: small;
 }
 
 .navbar-item:hover {
@@ -47,4 +49,26 @@ nav {
 
 .clear-option h2 {
     font-size: medium;
+}
+
+@media (max-width: 1250px) {
+    .clear-option h2 {
+        font-size: small;
+    }
+}
+
+@media (max-width: 650px) {
+    .navbar {
+        gap: 20px;
+    }
+
+    .visualize .button {
+        font-size: x-small;
+    }
+}
+
+@media (max-width: 425px) {
+    .navbar {
+        gap: 10px;
+    }
 }

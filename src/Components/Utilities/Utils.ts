@@ -47,7 +47,7 @@ export const GenerateGrid = (rows: number, cols: number): NodeType[][] => {
     for (let row = 0; row < rows; row++) {
         const currentRow: NodeType[] = [];
         for (let col = 0; col < cols; col++) {
-            currentRow.push(CreateNode(row, col, Math.floor(rows / 2), Math.floor(cols / 2) - 10, Math.floor(rows / 2), Math.floor(cols / 2) + 10));
+            currentRow.push(CreateNode(row, col, Math.floor(rows / 2), Math.floor(cols / 2) - 5, Math.floor(rows / 2), Math.floor(cols / 2) + 5));
         }
         grid.push(currentRow);
     }

@@ -17,8 +17,8 @@ function Grid({ rows, cols, isVisualizingPath, pathAlgo, resetPathVisualizing, i
     const isMousePressed = useRef<boolean>(false);
     const isChangingStartNode = useRef<boolean>(false);
     const isChangingEndNode = useRef<boolean>(false);
-    const startNodePosition = useRef<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) - 10 });
-    const endNodePosition = useRef<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) + 10 });
+    const startNodePosition = useRef<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) - 5 });
+    const endNodePosition = useRef<{ row: number, col: number }>({ row: Math.floor(rows / 2), col: Math.floor(cols / 2) + 5 });
 
     // use useRefs when want some value to be updated (or persist) in place without causing unneccessary re renders 
     // basically this hook internally maintains same reference accross re renders which helps in maintaining closures

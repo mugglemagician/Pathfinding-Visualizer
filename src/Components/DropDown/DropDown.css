@@ -48,3 +48,9 @@
     background-color: #1ABC9C;
     color: #FFF8F3;
 }
+
+@media (max-width: 1250px) {
+    .dropDown h2 {
+        font-size: small;
+    }
+}

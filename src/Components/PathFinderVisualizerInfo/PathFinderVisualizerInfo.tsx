@@ -39,7 +39,10 @@ export default function PathFinderVisualizerInfo({ algoInfo }: { algoInfo: strin
                 </li>
             </ul>
 
-            <a className="algoInfo">{algoInfo}</a>
+            <div className="algoInfo">
+                <a>{algoInfo}</a>
+            </div>
+
         </div>
     );
 }
