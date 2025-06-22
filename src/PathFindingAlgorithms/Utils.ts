@@ -1,4 +1,4 @@
-import { Agent, Force, NodeType, Vector } from "../types";
+import { NodeType } from "../types";
 
 export function getShortestPath(node: NodeType): NodeType[] {
     const shortestPath: NodeType[] = [];
